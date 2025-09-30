@@ -2,62 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cheque Management System Design System - Professional Financial App Theme */
+/* Cheque Management System - Professional Financial App with Vibrant Colors */
 
 @layer base {
   :root {
-    --background: 240 10% 98%;
-    --foreground: 240 10% 9%;
+    --background: 220 20% 97%;
+    --foreground: 220 20% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 9%;
+    --card-foreground: 220 20% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 9%;
+    --popover-foreground: 220 20% 10%;
 
-    --primary: 214 84% 56%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 214 84% 50%;
+    --primary-hover: 217 91% 55%;
+    --primary-light: 217 91% 95%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 240 10% 9%;
+    --secondary: 280 85% 65%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 280 85% 95%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 20% 96%;
+    --muted-foreground: 220 15% 45%;
 
-    --accent: 210 40% 96%;
-    --accent-foreground: 240 10% 9%;
+    --accent: 340 82% 62%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 340 82% 95%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
+    --destructive-light: 0 84% 95%;
 
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
     --success-light: 142 71% 95%;
+    --success-dark: 142 71% 35%;
 
     --warning: 45 93% 58%;
     --warning-foreground: 0 0% 100%;
     --warning-light: 45 93% 95%;
+    --warning-dark: 45 93% 48%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 214 84% 56%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+    --info-light: 199 89% 95%;
 
-    --financial-blue: 214 84% 56%;
-    --financial-blue-light: 214 84% 96%;
-    --financial-gray: 215 16% 47%;
-    --financial-gray-light: 210 40% 96%;
+    --border: 220 20% 90%;
+    --input: 220 20% 90%;
+    --ring: 217 91% 60%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(214 84% 56%), hsl(220 84% 65%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --financial-blue: 217 91% 60%;
+    --financial-blue-light: 217 91% 95%;
+    --financial-purple: 280 85% 65%;
+    --financial-purple-light: 280 85% 95%;
+    --financial-pink: 340 82% 62%;
+    --financial-pink-light: 340 82% 95%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(280 85% 65%));
+    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(142 71% 55%));
+    --gradient-warning: linear-gradient(135deg, hsl(45 93% 58%), hsl(30 93% 58%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(220 20% 98%));
+    --gradient-header: linear-gradient(90deg, hsl(217 91% 60%), hsl(280 85% 65%), hsl(340 82% 62%));
     
-    --shadow-card: 0 4px 6px -1px hsl(214 84% 56% / 0.1), 0 2px 4px -2px hsl(214 84% 56% / 0.1);
-    --shadow-elevated: 0 10px 15px -3px hsl(214 84% 56% / 0.1), 0 4px 6px -4px hsl(214 84% 56% / 0.1);
+    --shadow-sm: 0 1px 2px 0 hsl(220 20% 10% / 0.05);
+    --shadow-card: 0 4px 6px -1px hsl(217 91% 60% / 0.1), 0 2px 4px -2px hsl(217 91% 60% / 0.1);
+    --shadow-elevated: 0 10px 15px -3px hsl(217 91% 60% / 0.15), 0 4px 6px -4px hsl(217 91% 60% / 0.1);
+    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.3);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.15s ease;
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -122,5 +140,35 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer utilities {
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated;
+  }
+  
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
   }
 }
