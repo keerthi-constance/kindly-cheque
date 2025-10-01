@@ -67,6 +67,12 @@ export default {
           "purple-light": "hsl(var(--financial-purple-light))",
           pink: "hsl(var(--financial-pink))",
           "pink-light": "hsl(var(--financial-pink-light))",
+          emerald: "hsl(var(--financial-emerald))",
+          "emerald-light": "hsl(var(--financial-emerald-light))",
+          orange: "hsl(var(--financial-orange))",
+          "orange-light": "hsl(var(--financial-orange-light))",
+          cyan: "hsl(var(--financial-cyan))",
+          "cyan-light": "hsl(var(--financial-cyan-light))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -126,6 +132,9 @@ export default {
         'card': 'var(--shadow-card)',
         'elevated': 'var(--shadow-elevated)',
         'glow': 'var(--shadow-glow)',
+        'glow-purple': 'var(--shadow-glow-purple)',
+        'glow-pink': 'var(--shadow-glow-pink)',
+        'glow-success': 'var(--shadow-glow-success)',
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',

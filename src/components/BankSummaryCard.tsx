@@ -14,9 +14,9 @@ interface BankSummaryCardProps {
 
 export function BankSummaryCard({ outgoingBanks, incomingBanks }: BankSummaryCardProps) {
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
+    return new Intl.NumberFormat("en-LK", {
       style: "currency",
-      currency: "INR",
+      currency: "LKR",
       notation: "compact",
       maximumFractionDigits: 1,
     }).format(amount);

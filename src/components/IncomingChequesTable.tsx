@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { IncomingCheque } from "./AddIncomingChequeDialog";
@@ -15,13 +16,30 @@ import { format, isToday, parseISO } from "date-fns";
 interface IncomingChequesTableProps {
   cheques: IncomingCheque[];
   onMarkDeposited: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 export function IncomingChequesTable({
   cheques,
   onMarkDeposited,
+  onDelete,
 }: IncomingChequesTableProps) {
-  const activeCheques = cheques.filter((c) => c.status === "pending");
+  const activeCheques = cheques.filter((c) => c.status === "pending").sort((a, b) => {
+    // Sort by received date in ascending order (oldest first)
+    return a.receivedDate.localeCompare(b.receivedDate);
+  });
+
+  // Function to check if a cheque is ready based on received date comparison
+  const isReady = (cheque: IncomingCheque) => {
+    const receivedDate = parseISO(cheque.receivedDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // receivedDate = today: Ready
+    // receivedDate > today: Pending (not ready)
+    // receivedDate < today: Ready
+    return receivedDate <= today;
+  };
 
   const isDueToday = (dateString: string) => {
     try {
@@ -32,9 +50,9 @@ export function IncomingChequesTable({
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
+    return new Intl.NumberFormat("en-LK", {
       style: "currency",
-      currency: "INR",
+      currency: "LKR",
     }).format(amount);
   };
 
@@ -77,17 +95,34 @@ export function IncomingChequesTable({
         <TableBody>
           {activeCheques.map((cheque) => {
             const dueToday = isDueToday(cheque.chequeDate);
+            const ready = isReady(cheque);
             return (
               <TableRow
                 key={cheque.id}
                 className={
                   dueToday
-                    ? "bg-warning-light hover:bg-warning-light/80 border-l-4 border-l-warning"
-                    : ""
+                    ? "bg-gradient-to-r from-warning-light/30 to-transparent border-l-4 border-l-warning shadow-sm"
+                    : ready
+                    ? "bg-gradient-to-r from-warning-light/30 to-transparent border-l-4 border-l-warning shadow-sm"
+                    : "hover:shadow-sm"
                 }
               >
                 <TableCell className="font-mono font-medium">
-                  {cheque.chequeNumber}
+                  <div className="flex items-center justify-between gap-2">
+                    <span>{cheque.chequeNumber}</span>
+                    <div className="flex items-center gap-1">
+                      <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-destructive"
+                      onClick={() => onDelete(cheque.id)}
+                      aria-label="Delete cheque"
+                      title="Delete cheque"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </TableCell>
                 <TableCell className="font-medium">{cheque.payerName}</TableCell>
                 <TableCell className="font-semibold">
@@ -104,10 +139,16 @@ export function IncomingChequesTable({
                 </TableCell>
                 <TableCell>
                   <Badge
-                    variant={dueToday ? "default" : "secondary"}
-                    className={dueToday ? "bg-warning text-warning-foreground" : ""}
+                    variant={dueToday ? "default" : ready ? "default" : "secondary"}
+                    className={`font-semibold px-3 py-1 ${
+                      dueToday 
+                        ? "bg-gradient-to-r from-warning to-warning-dark text-white shadow-glow" 
+                        : ready
+                        ? "bg-gradient-to-r from-warning to-warning-dark text-white shadow-glow"
+                        : "bg-gradient-to-r from-muted to-muted/80 text-muted-foreground"
+                    }`}
                   >
-                    {dueToday ? "Ready to Deposit" : "Pending"}
+                    {dueToday ? "Due Today" : ready ? "Ready to Deposit" : "Pending"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">

@@ -7,21 +7,29 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import { CheckCircle2, History } from "lucide-react";
 import { Cheque } from "./AddChequeDialog";
 import { format, parseISO } from "date-fns";
 
 interface HistoryTableProps {
   cheques: Cheque[];
+  onDelete: (id: string) => void;
 }
 
-export function HistoryTable({ cheques }: HistoryTableProps) {
-  const completedCheques = cheques.filter((c) => c.status === "completed");
+export function HistoryTable({ cheques, onDelete }: HistoryTableProps) {
+  const completedCheques = cheques.filter((c) => c.status === "completed").sort((a, b) => {
+    // Sort by completed date in ascending order (oldest first)
+    const aDate = a.completedDate || a.startDate;
+    const bDate = b.completedDate || b.startDate;
+    return aDate.localeCompare(bDate);
+  });
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
+    return new Intl.NumberFormat("en-LK", {
       style: "currency",
-      currency: "INR",
+      currency: "LKR",
     }).format(amount);
   };
 
@@ -65,7 +73,21 @@ export function HistoryTable({ cheques }: HistoryTableProps) {
           {completedCheques.map((cheque) => (
             <TableRow key={cheque.id}>
               <TableCell className="font-mono font-medium">
-                {cheque.chequeNumber}
+                <div className="flex items-center justify-between gap-2">
+                  <span>{cheque.chequeNumber}</span>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-destructive"
+                      onClick={() => onDelete(cheque.id)}
+                      aria-label="Delete cheque"
+                      title="Delete cheque"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </TableCell>
               <TableCell className="font-medium">{cheque.payeeName}</TableCell>
               <TableCell className="font-semibold">

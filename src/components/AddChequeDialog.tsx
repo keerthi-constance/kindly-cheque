@@ -24,7 +24,7 @@ export interface Cheque {
   purpose: string;
   amount: number;
   bankName: string;
-  status: "pending" | "completed";
+  status: "pending" | "ready" | "completed";
   completedDate?: string;
 }
 
