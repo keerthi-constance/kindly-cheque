@@ -123,10 +123,11 @@ app.post('/api/incoming/:id/delete', async (req, res) => {
   res.json({ ok: true });
 });
 
-async function start() {
+// Connect to MongoDB
+async function connectDB() {
   if (!mongoUri) {
     console.error('MONGO_URI is not set. Please create a .env file with MONGO_URI.');
-    process.exit(1);
+    return;
   }
 
   try {
@@ -134,14 +135,13 @@ async function start() {
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Failed to connect to MongoDB:', err.message);
-    process.exit(1);
   }
-
-  app.listen(port, () => {
-    console.log(`API listening on http://localhost:${port}`);
-  });
 }
 
-start();
+// Connect to database
+connectDB();
+
+// For Vercel serverless functions, export the app
+export default app;
 
 
